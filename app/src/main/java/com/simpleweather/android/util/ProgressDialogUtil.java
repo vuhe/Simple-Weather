@@ -18,7 +18,7 @@ public class ProgressDialogUtil {
 
     /**
      * 弹出耗时对话框
-     * @param context
+     * @param context 上下文
      */
     public static void showProgressDialog(Context context) {
         if (mAlertDialog == null) {
