@@ -21,16 +21,14 @@
         android:layout_gravity="center_vertical"
         android:textColor="#fff" />
 
-    <TextView
-        android:id="@+id/wf_tmp_max_text"
+    <ImageView
+        android:id="@+id/wf_cond_icon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_gravity="center"
-        android:textColor="#fff" />
+        android:layout_weight="1"/>
 
     <TextView
-        android:id="@+id/wf_tmp_min_text"
+        android:id="@+id/wf_tmp_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"

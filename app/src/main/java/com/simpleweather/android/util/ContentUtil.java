@@ -1,5 +1,7 @@
 package com.simpleweather.android.util;
 
+import com.simpleweather.android.View.activity.WeatherActivity;
+
 public class ContentUtil {
 
     //用户id

@@ -11,10 +11,10 @@ import com.simpleweather.android.util.SpUtils;
 import interfaces.heweather.com.interfacesmodule.bean.Lang;
 import interfaces.heweather.com.interfacesmodule.bean.Unit;
 import interfaces.heweather.com.interfacesmodule.bean.air.now.AirNow;
-import interfaces.heweather.com.interfacesmodule.bean.alarm.AlarmList;
 import interfaces.heweather.com.interfacesmodule.bean.search.Search;
 import interfaces.heweather.com.interfacesmodule.bean.weather.forecast.Forecast;
 import interfaces.heweather.com.interfacesmodule.bean.weather.hourly.Hourly;
+import interfaces.heweather.com.interfacesmodule.bean.weather.lifestyle.Lifestyle;
 import interfaces.heweather.com.interfacesmodule.bean.weather.now.Now;
 import interfaces.heweather.com.interfacesmodule.view.HeWeather;
 
@@ -62,32 +62,12 @@ public class WeatherImpl implements WeatherPresenters {
                         Forecast weatherForecast = SpUtils.getBean(context, "weatherForecast",
                                 Forecast.class);
                         weatherInterface.getWeatherForecast(weatherForecast);
-                        getAirForecast(location);
                     }
 
                     @Override
                     public void onSuccess(Forecast forecast) {
                         weatherInterface.getWeatherForecast(forecast);
-                        getAirForecast(location);
                         SpUtils.saveBean(context, "weatherForecast", forecast);
-                    }
-                });
-    }
-
-    @Override
-    public void getAlarm(String location) {
-        HeWeather.getAlarm(context, location, lang, unit,
-                new HeWeather.OnResultAlarmBeansListener() {
-                    @Override
-                    public void onError(Throwable throwable) {
-                        weatherInterface.getAlarm(null);
-                        Log.i("sky", "getAlarm onError: ");
-                    }
-
-                    @Override
-                    public void onSuccess(AlarmList alarmList) {
-                        weatherInterface.getAlarm(alarmList.getAlarms().get(0));
-                        SpUtils.saveBean(context, "alarm", alarmList.getAlarms().get(0));
                     }
                 });
     }
@@ -141,11 +121,6 @@ public class WeatherImpl implements WeatherPresenters {
     }
 
     @Override
-    public void getAirForecast(String location) {
-
-    }
-
-    @Override
     public void getWeatherHourly(String location) {
         HeWeather.getWeatherHourly(context, location, lang, unit,
                 new HeWeather.OnResultWeatherHourlyBeanListener() {
@@ -158,6 +133,23 @@ public class WeatherImpl implements WeatherPresenters {
                     public void onSuccess(Hourly hourly) {
                         weatherInterface.getWeatherHourly(hourly);
                         SpUtils.saveBean(context, "weatherHourly", hourly);
+                    }
+                });
+    }
+
+    @Override
+    public void getWeatherLifeStyle(String location) {
+        HeWeather.getWeatherLifeStyle(context, location, lang, unit,
+                new HeWeather.OnResultWeatherLifeStyleBeanListener() {
+                    @Override
+                    public void onError(Throwable throwable) {
+                        Log.i("sky", "getWeatherLifeStyle onError: ");
+                    }
+
+                    @Override
+                    public void onSuccess(Lifestyle lifestyle) {
+                        weatherInterface.getWeatherLifeStyle(lifestyle);
+                        SpUtils.saveBean(context, "weatherLifeStyle", lifestyle);
                     }
                 });
     }

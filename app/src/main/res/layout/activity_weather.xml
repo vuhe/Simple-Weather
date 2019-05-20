@@ -9,7 +9,6 @@
         android:id="@+id/weather_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
         android:overScrollMode="never"
         android:scrollbars="none">
 
@@ -20,6 +19,9 @@
             <include layout="@layout/item_title" />
             <include layout="@layout/item_now" />
             <include layout="@layout/item_weather_forecast" />
+            <include layout="@layout/item_weather_hourly" />
+            <include layout="@layout/item_air_now" />
+            <include layout="@layout/item_life_style" />
         </LinearLayout>
     </ScrollView>
 </FrameLayout>
