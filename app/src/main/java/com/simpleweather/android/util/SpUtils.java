@@ -6,6 +6,7 @@ import android.util.Base64;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.simpleweather.android.MyApplication;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -20,12 +21,12 @@ import java.util.List;
 public class SpUtils {
 
     public static String PREFERENCE_NAME = "SimpleApp";
+    private static Context context = MyApplication.getContext();
 
     /**
      * 清空统计数据
-     * @param context 上下文
      */
-    public static void clearSp(Context context) {
+    public static void clearSp() {
         SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
@@ -34,12 +35,11 @@ public class SpUtils {
 
     /**
      * 写入String类型存储
-     * @param context 上下文
      * @param key 键入条目
      * @param value 存入的值
      * @return 如果新值已成功写入存储，返回True
      */
-    public static boolean putString(Context context, String key, String value) {
+    public static boolean putString(String key, String value) {
         SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
@@ -49,23 +49,21 @@ public class SpUtils {
 
     /**
      * 读取String类型存储
-     * @param context 上下文
      * @param key 键值
      * @return 读取的数据
-     * @see #getString(Context, String, String)
+     * @see #getString(String, String)
      */
-    public static String getString(Context context, String key) {
-        return getString(context, key, null);
+    public static String getString(String key) {
+        return getString(key, null);
     }
 
     /**
      * 读取String类型存储
-     * @param context 上下文
      * @param key 键值
      * @param defaultValue 读取失败默认返回值
      * @return 如果读取成功则返回存储的值，否则返回defaultValue
      */
-    public static String getString(Context context, String key, String defaultValue) {
+    public static String getString(String key, String defaultValue) {
         SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME,
                 Context.MODE_PRIVATE);
         return settings.getString(key, defaultValue);
@@ -73,12 +71,11 @@ public class SpUtils {
 
     /**
      * 写入int类型存储
-     * @param context 上下文
      * @param key 键入条目
      * @param value 存入的值
      * @return 如果新值已成功写入存储，返回True
      */
-    public static boolean putInt(Context context, String key, int value) {
+    public static boolean putInt(String key, int value) {
         SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
@@ -88,23 +85,21 @@ public class SpUtils {
 
     /**
      * 读取int类型存储
-     * @param context 上下文
      * @param key 键值
      * @return 读取的数据
-     * @see #getInt(Context, String, int)
+     * @see #getInt(String, int)
      */
-    public static int getInt(Context context, String key) {
-        return getInt(context, key, -1);
+    public static int getInt(String key) {
+        return getInt(key, -1);
     }
 
     /**
      * 读取int类型存储
-     * @param context 上下文
      * @param key 键值
      * @param defaultValue 读取失败默认返回值
      * @return 如果读取成功则返回存储的值，否则返回defaultValue
      */
-    public static int getInt(Context context, String key, int defaultValue) {
+    public static int getInt(String key, int defaultValue) {
         SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME,
                 Context.MODE_PRIVATE);
         return settings.getInt(key, defaultValue);
@@ -112,12 +107,11 @@ public class SpUtils {
 
     /**
      * 写入long类型存储
-     * @param context 上下文
      * @param key 键入条目
      * @param value 存入的值
      * @return 如果新值已成功写入存储，返回True
      */
-    public static boolean putLong(Context context, String key, long value) {
+    public static boolean putLong(String key, long value) {
         SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
@@ -127,23 +121,21 @@ public class SpUtils {
 
     /**
      * 读取long类型存储
-     * @param context 上下文
      * @param key 键值
      * @return 读取的数据
-     * @see #getLong(Context, String, long)
+     * @see #getLong(String, long)
      */
-    public static long getLong(Context context, String key) {
-        return getLong(context, key, -1);
+    public static long getLong(String key) {
+        return getLong(key, -1);
     }
 
     /**
      * 读取long类型存储
-     * @param context 上下文
      * @param key 键值
      * @param defaultValue 读取失败默认返回值
      * @return 如果读取成功则返回存储的值，否则返回defaultValue
      */
-    public static long getLong(Context context, String key, long defaultValue) {
+    public static long getLong(String key, long defaultValue) {
         SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME,
                 Context.MODE_PRIVATE);
         return settings.getLong(key, defaultValue);
@@ -151,12 +143,11 @@ public class SpUtils {
 
     /**
      * 写入float类型存储
-     * @param context 上下文
      * @param key 键入条目
      * @param value 存入的值
      * @return 如果新值已成功写入存储，返回True
      */
-    public static boolean putFloat(Context context, String key, float value) {
+    public static boolean putFloat(String key, float value) {
         SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
@@ -166,23 +157,21 @@ public class SpUtils {
 
     /**
      * 读取float类型存储
-     * @param context 上下文
      * @param key 键值
      * @return 读取的数据
-     * @see #getFloat(Context, String, float)
+     * @see #getFloat(String, float)
      */
-    public static float getFloat(Context context, String key) {
-        return getFloat(context, key, -1);
+    public static float getFloat(String key) {
+        return getFloat(key, -1);
     }
 
     /**
      * 读取float类型存储
-     * @param context 上下文
      * @param key 键值
      * @param defaultValue 读取失败默认返回值
      * @return 如果读取成功则返回存储的值，否则返回defaultValue
      */
-    public static float getFloat(Context context, String key, float defaultValue) {
+    public static float getFloat(String key, float defaultValue) {
         SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME,
                 Context.MODE_PRIVATE);
         return settings.getFloat(key, defaultValue);
@@ -190,12 +179,11 @@ public class SpUtils {
 
     /**
      * 写入boolean类型存储
-     * @param context 上下文
      * @param key 键入条目
      * @param value 存入的值
      * @return 如果新值已成功写入存储，返回True
      */
-    public static boolean putBoolean(Context context, String key, boolean value) {
+    public static boolean putBoolean(String key, boolean value) {
         SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
@@ -205,23 +193,21 @@ public class SpUtils {
 
     /**
      * 读取boolean类型存储
-     * @param context 上下文
      * @param key 键值
      * @return 读取的数据
-     * @see #getBoolean(Context, String, boolean)
+     * @see #getBoolean(String, boolean)
      */
-    public static boolean getBoolean(Context context, String key) {
-        return getBoolean(context, key, false);
+    public static boolean getBoolean(String key) {
+        return getBoolean(key, false);
     }
 
     /**
      * 读取boolean类型存储
-     * @param context 上下文
      * @param key 键值
      * @param defaultValue 读取失败默认返回值
      * @return 如果读取成功则返回存储的值，否则返回defaultValue
      */
-    public static boolean getBoolean(Context context, String key, boolean defaultValue) {
+    public static boolean getBoolean(String key, boolean defaultValue) {
         SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME,
                 Context.MODE_PRIVATE);
         return settings.getBoolean(key, defaultValue);
@@ -260,8 +246,7 @@ public class SpUtils {
         return SceneList;
     }
 
-    public static boolean putHashMap(Context context, String key,
-                                     HashMap<String, Integer> hashmap) {
+    public static boolean putHashMap(String key, HashMap<String, Integer> hashmap) {
         SharedPreferences settings = context.getSharedPreferences(
                 PREFERENCE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
@@ -274,8 +259,7 @@ public class SpUtils {
         return editor.commit();
     }
 
-    public static HashMap<String, Integer> getHashMap(Context context,
-                                                      String key) {
+    public static HashMap<String, Integer> getHashMap(String key) {
         SharedPreferences settings = context.getSharedPreferences(
                 PREFERENCE_NAME, Context.MODE_PRIVATE);
         String listStr = settings.getString(key, "");
@@ -293,12 +277,11 @@ public class SpUtils {
 
     /**
      * 保存List<String>
-     * @param context 上下文
      * @param key 键入条目
      * @param values 存入的值
      * @return 如果新值已成功写入存储，返回True
      */
-    public static boolean putStringList(Context context, String key, List<String> values) {
+    public static boolean putStringList(String key, List<String> values) {
         SharedPreferences.Editor edit = context.getSharedPreferences(
                 PREFERENCE_NAME, Context.MODE_PRIVATE).edit();
         edit.putInt(key, values.size());
@@ -310,11 +293,10 @@ public class SpUtils {
 
     /**
      * 获取List<String>
-     * @param context 上下文
      * @param key 键值
      * @return 读取的数据
      */
-    public static List<String> getStringList(Context context, String key) {
+    public static List<String> getStringList(String key) {
         List<String> values = new ArrayList<>();
         SharedPreferences sp = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         int listSize = sp.getInt(key, 0);
@@ -326,12 +308,11 @@ public class SpUtils {
 
     /**
      * 保存List<Integer>
-     * @param context 上下文
      * @param key 键入条目
      * @param values 存入的值
      * @return 如果新值已成功写入存储，返回True
      */
-    public static boolean putIntList(Context context, String key, List<Integer> values) {
+    public static boolean putIntList(String key, List<Integer> values) {
         SharedPreferences.Editor edit = context.getSharedPreferences(
                 PREFERENCE_NAME, Context.MODE_PRIVATE).edit();
         edit.putInt(key, values.size());
@@ -343,11 +324,10 @@ public class SpUtils {
 
     /**
      * 获取List<Integer>
-     * @param context 上下文
      * @param key 键值
      * @return 读取的数据
      */
-    public static List<Integer> getIntList(Context context, String key) {
+    public static List<Integer> getIntList(String key) {
         List<Integer> values = new ArrayList<>();
         SharedPreferences sp = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         int listSize = sp.getInt(key, 0);
@@ -359,12 +339,11 @@ public class SpUtils {
 
     /**
      * 保存List<Long>
-     * @param context 上下文
      * @param key 键入条目
      * @param values 存入的值
      * @return 如果新值已成功写入存储，返回True
      */
-    public static boolean putLongList(Context context, String key, List<Long> values) {
+    public static boolean putLongList(String key, List<Long> values) {
         SharedPreferences.Editor edit = context.getSharedPreferences(
                 PREFERENCE_NAME, Context.MODE_PRIVATE).edit();
         edit.putInt(key, values.size());
@@ -376,11 +355,10 @@ public class SpUtils {
 
     /**
      * 获取List<Long>
-     * @param context 上下文
      * @param key 键值
      * @return 读取的数据
      */
-    public static List<Long> getLongList(Context context, String key) {
+    public static List<Long> getLongList(String key) {
         List<Long> values = new ArrayList<>();
         SharedPreferences sp = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         int listSize = sp.getInt(key, 0);
@@ -392,12 +370,11 @@ public class SpUtils {
 
     /**
      * 保存List<Object>
-     * @param context 上下文
      * @param key 键入条目
      * @param datalist 存入的值
      * @return 如果新值已成功写入存储，返回True
      */
-    public <T> void putListBean(Context context, String key, List<T> datalist) {
+    public <T> void putListBean(String key, List<T> datalist) {
         SharedPreferences.Editor edit = context.getSharedPreferences(
                 PREFERENCE_NAME, Context.MODE_PRIVATE).edit();
         if (null == datalist || datalist.size() <= 0) {
@@ -412,11 +389,10 @@ public class SpUtils {
 
     /**
      * 获取List<Object>
-     * @param context 上下文
      * @param key 键值
      * @return 读取的数据listbean
      */
-    public <T> List<T> getListBean(Context context, String key) {
+    public <T> List<T> getListBean(String key) {
         SharedPreferences sp = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         List<T> dataList = new ArrayList<T>();
         String strJson = sp.getString(key, null);
@@ -431,13 +407,12 @@ public class SpUtils {
 
     /**
      * 存放实体类以及任意类型
-     * @param context 上下文
      * @param key 键入条目
      * @param obj 存入的类
      */
-    public static void saveBean(Context context, String key,
-                                Object obj) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE).edit();
+    public static void saveBean(String key, Object obj) {
+        SharedPreferences.Editor editor = context
+                .getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE).edit();
         Gson gson = new Gson();
         String objString = gson.toJson(obj);
         editor.putString(key, objString).commit();
@@ -445,14 +420,14 @@ public class SpUtils {
 
     /**
      * 获取实体类
-     * @param context 上下文
      * @param key 键值
      * @param clazz 这里传入一个类就是我们所需要的实体类(obj)
      * @return 返回我们封装好的该实体类(obj)
      */
-    public static <T> T getBean(Context context, String key,
-                                Class<T> clazz) {
-        String objString = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE).getString(key, "");
+    public static <T> T getBean(String key, Class<T> clazz) {
+        String objString = context
+                .getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+                .getString(key, "");
         Gson gson = new Gson();
         return gson.fromJson(objString, clazz);
     }

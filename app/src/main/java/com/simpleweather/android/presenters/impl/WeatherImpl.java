@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.simpleweather.android.MyApplication;
 import com.simpleweather.android.presenters.WeatherInterface;
 import com.simpleweather.android.presenters.WeatherPresenters;
 import com.simpleweather.android.util.SpUtils;
@@ -26,8 +27,8 @@ public class WeatherImpl implements WeatherPresenters {
     private Lang lang;
     private Unit unit;
 
-    public WeatherImpl(Context context, WeatherInterface weatherInterface) {
-        this.context = context;
+    public WeatherImpl(WeatherInterface weatherInterface) {
+        this.context = MyApplication.getContext();
         this.weatherInterface = weatherInterface;
         //测试时，仅设置中文
         lang = Lang.CHINESE_SIMPLIFIED;
@@ -40,14 +41,14 @@ public class WeatherImpl implements WeatherPresenters {
                 new HeWeather.OnResultWeatherNowBeanListener() {
             @Override
             public void onError(Throwable throwable) {
-                Now weatherNow = SpUtils.getBean(context, "weatherNow", Now.class);
+                Now weatherNow = SpUtils.getBean("weatherNow", Now.class);
                 weatherInterface.getWeatherNow(weatherNow);
             }
 
             @Override
             public void onSuccess(Now now) {
                 weatherInterface.getWeatherNow(now);
-                SpUtils.saveBean(context, "weatherNow", now);
+                SpUtils.saveBean("weatherNow", now);
             }
         });
     }
@@ -59,7 +60,7 @@ public class WeatherImpl implements WeatherPresenters {
                     @Override
                     public void onError(Throwable throwable) {
                         Log.i("sky", "getWeatherForecast onError: ");
-                        Forecast weatherForecast = SpUtils.getBean(context, "weatherForecast",
+                        Forecast weatherForecast = SpUtils.getBean("weatherForecast",
                                 Forecast.class);
                         weatherInterface.getWeatherForecast(weatherForecast);
                     }
@@ -67,7 +68,7 @@ public class WeatherImpl implements WeatherPresenters {
                     @Override
                     public void onSuccess(Forecast forecast) {
                         weatherInterface.getWeatherForecast(forecast);
-                        SpUtils.saveBean(context, "weatherForecast", forecast);
+                        SpUtils.saveBean("weatherForecast", forecast);
                     }
                 });
     }
@@ -85,7 +86,7 @@ public class WeatherImpl implements WeatherPresenters {
                     @Override
                     public void onSuccess(AirNow airNow) {
                         weatherInterface.getAirNow(airNow);
-                        SpUtils.saveBean(context, "airNow", airNow);
+                        SpUtils.saveBean("airNow", airNow);
                     }
                 });
     }
@@ -132,7 +133,7 @@ public class WeatherImpl implements WeatherPresenters {
                     @Override
                     public void onSuccess(Hourly hourly) {
                         weatherInterface.getWeatherHourly(hourly);
-                        SpUtils.saveBean(context, "weatherHourly", hourly);
+                        SpUtils.saveBean("weatherHourly", hourly);
                     }
                 });
     }
@@ -149,7 +150,7 @@ public class WeatherImpl implements WeatherPresenters {
                     @Override
                     public void onSuccess(Lifestyle lifestyle) {
                         weatherInterface.getWeatherLifeStyle(lifestyle);
-                        SpUtils.saveBean(context, "weatherLifeStyle", lifestyle);
+                        SpUtils.saveBean("weatherLifeStyle", lifestyle);
                     }
                 });
     }

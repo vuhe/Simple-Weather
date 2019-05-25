@@ -1,8 +1,15 @@
 package com.simpleweather.android.View.activity;
 
+import android.content.Intent;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,6 +25,8 @@ import com.simpleweather.android.presenters.WeatherInterface;
 import com.simpleweather.android.presenters.impl.WeatherImpl;
 import com.simpleweather.android.util.ContentUtil;
 import com.simpleweather.android.util.IconUtils;
+import com.simpleweather.android.util.SpUtils;
+import com.simpleweather.android.util.TransUnitUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +38,6 @@ import interfaces.heweather.com.interfacesmodule.bean.weather.forecast.ForecastB
 import interfaces.heweather.com.interfacesmodule.bean.weather.hourly.Hourly;
 import interfaces.heweather.com.interfacesmodule.bean.weather.hourly.HourlyBase;
 import interfaces.heweather.com.interfacesmodule.bean.weather.lifestyle.Lifestyle;
-import interfaces.heweather.com.interfacesmodule.bean.weather.lifestyle.LifestyleBase;
 import interfaces.heweather.com.interfacesmodule.bean.weather.now.Now;
 import interfaces.heweather.com.interfacesmodule.bean.weather.now.NowBase;
 import interfaces.heweather.com.interfacesmodule.view.HeConfig;
@@ -37,8 +45,9 @@ import interfaces.heweather.com.interfacesmodule.view.HeConfig;
 public class WeatherActivity extends AppCompatActivity implements WeatherInterface {
 
     private ScrollView weatherLayout;
-    private TextView titleCityText;
-    private TextView titleUpdateTimeText;
+    private CoordinatorLayout weatherBackground;
+    private Toolbar title;
+    private SwipeRefreshLayout weatherRefresh;
 
     private TextView nowCondText;
     private TextView nowTmpText;
@@ -64,7 +73,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
     private TextView tvLineMin;
     private TextView tvLineMax;
     private Hourly weatherHourlyBean;
-    private LinearLayout hourlyLayout;
+    private CardView hourlyCard;
     private ScrollWatched watched;
     private HourlyForecastView hourlyForecastView;
 
@@ -77,11 +86,11 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
     private TextView airNowSo2Text;
     private TextView airNowCoText;
     private TextView airNowO3Text;
-    private LinearLayout airNowLayout;
+    private CardView airNowCard;
 
     private TextView lifeStyleBrfText;
     private TextView lifeStyleTypeText;
-    private LinearLayout lifeStyleLayout;
+    private CardView lifeStyleCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +100,35 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
         HeConfig.switchToFreeServerNode();
         initObserver();
         initView();
-        initData("CN101010100");
+        String mLocation = SpUtils.getString("cityId");
+        if (mLocation != null && !mLocation.equals(ContentUtil.LOCATION)) {
+            ContentUtil.LOCATION = mLocation;
+        }
+        initData(ContentUtil.LOCATION);
         weatherLayout.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * 返回活动时，刷新数据
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String mLocation = SpUtils.getString("cityId");
+        if (mLocation != null && !mLocation.equals(ContentUtil.LOCATION)) {
+            ContentUtil.LOCATION = mLocation;
+            initData(ContentUtil.LOCATION);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        String mLocation = SpUtils.getString("cityId");
+        if (mLocation != null && !mLocation.equals(ContentUtil.LOCATION)) {
+            ContentUtil.LOCATION = mLocation;
+            initData(ContentUtil.LOCATION);
+        }
     }
 
     /**
@@ -124,20 +160,55 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
      * 初始化免费节点全部数据及view
      */
     private void initData(String location) {
-        WeatherImpl weatherImpl = new WeatherImpl(this, this);
+        WeatherImpl weatherImpl = new WeatherImpl(this);
+        weatherImpl.getWeatherNow(location);
         weatherImpl.getWeatherHourly(location);
         weatherImpl.getAirNow(location);
         weatherImpl.getWeatherForecast(location);
-        weatherImpl.getWeatherNow(location);
         weatherImpl.getWeatherLifeStyle(location);
+    }
+
+    /**
+     * 设置view及menu
+     */
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.title_city_search:
+                Intent intent = new Intent(WeatherActivity.this, SearchActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.title_setting:
+                //启动设置
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 
     private void initView() {
 
         //标题view初始化
+        weatherBackground = findViewById(R.id.weather_background);
         weatherLayout = findViewById(R.id.weather_layout);
-        titleCityText = findViewById(R.id.title_city);
-        titleUpdateTimeText = findViewById(R.id.title_update_time);
+        title = findViewById(R.id.title_toolbar);
+        setSupportActionBar(title);
+        weatherRefresh = findViewById(R.id.weather_refresh);
+        weatherRefresh.setColorSchemeResources(R.color.colorPrimary);
+        weatherRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                initData(ContentUtil.LOCATION);
+                weatherRefresh.setRefreshing(false);
+            }
+        });
 
         //实况天气view初始化
         nowCondText = findViewById(R.id.now_cond_text);
@@ -157,7 +228,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
         forecastLayout = findViewById(R.id.forecast_layout);
 
         //小时天气view初始化
-        hourlyLayout = findViewById(R.id.hourly_layout);
+        hourlyCard = findViewById(R.id.hourly_card);
         IndexHorizontalScrollView horizontalScrollView = findViewById(R.id.hsv);
         hourlyForecastView = findViewById(R.id.hourly);
         horizontalScrollView.setToday24HourView(hourlyForecastView);
@@ -183,12 +254,12 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
         airNowSo2Text = findViewById(R.id.air_now_so2_text);
         airNowCoText = findViewById(R.id.air_now_co_text);
         airNowO3Text = findViewById(R.id.air_now_o3_text);
-        airNowLayout = findViewById(R.id.air_now_layout);
+        airNowCard = findViewById(R.id.air_now_card);
 
         //生活指数view初始化
         lifeStyleBrfText = findViewById(R.id.life_style_brf_text);
         lifeStyleTypeText = findViewById(R.id.life_style_type_text);
-        lifeStyleLayout = findViewById(R.id.life_style_layout);
+        lifeStyleCard = findViewById(R.id.life_style_card);
 
     }
 
@@ -213,6 +284,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
             String fl = "体感温度：" + now.getFl() + "°";
             String cloud = now.getCloud();
             int condCode = IconUtils.getDayIconDark(now.getCond_code());
+            int backCode = IconUtils.getDayBack(now.getCond_code());
             nowTmpText.setText(tmp);
             nowCondText.setText(condTxt);
             nowFlText.setText(fl);
@@ -233,8 +305,10 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
                 nowCloudLayout.setVisibility(View.GONE);
             }
             nowCondIcon.setImageResource(condCode);
-            titleCityText.setText(city);
-            titleUpdateTimeText.setText(updateTime);
+            weatherBackground.setBackgroundResource(backCode);
+            title.setTitle(city);
+            updateTime = TransUnitUtil.getUpdateTime(updateTime);
+            title.setSubtitle(updateTime);
         }
     }
 
@@ -243,6 +317,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
         if (bean != null && bean.getDaily_forecast() != null) {
             List<ForecastBase> forecastList = bean.getDaily_forecast();
             forecastLayout.removeAllViews();
+            int i = 0;
             for (ForecastBase forecast : forecastList) {
                 View view = LayoutInflater.from(this).inflate(R.layout.items_weather_forecast,
                         forecastLayout, false);
@@ -250,7 +325,8 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
                 wfDateText = view.findViewById(R.id.wf_date_text);
                 wfCondIcon = view.findViewById(R.id.wf_cond_icon);
                 wfTmpText = view.findViewById(R.id.wf_tmp_text);
-                wfDateText.setText(forecast.getDate());
+                String time = TransUnitUtil.getForecastTime(forecast.getDate(), i++);
+                wfDateText.setText(time);
                 wfCondText.setText(forecast.getCond_txt_d());
                 int condCode = IconUtils.getDayIconDark(forecast.getCond_code_d());
                 wfCondIcon.setImageResource(condCode);
@@ -264,7 +340,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
     @Override
     public void getAirNow(AirNow bean) {
         if (bean != null && bean.getAir_now_city() != null) {
-            airNowLayout.setVisibility(View.VISIBLE);
+            airNowCard.setVisibility(View.VISIBLE);
             AirNowCity airNowCity = bean.getAir_now_city();
             String main = airNowCity.getMain();
             String qlty = airNowCity.getQlty();
@@ -276,11 +352,13 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
             String co = airNowCity.getCo();
             String o3 = airNowCity.getO3();
             airNowAqiText.setText(aqi);
-            airNowMainText.setText(main);
             if (main.equals("-")) {
                 LinearLayout airNowMainLayout = findViewById(R.id.air_now_main_layout);
                 airNowMainLayout.setVisibility(View.GONE);
+            } else {
+                main = TransUnitUtil.getAirNowMain(main);
             }
+            airNowMainText.setText(main);
             airNowQltyText.setText(qlty);
             airNowPm10Text.setText(pm10);
             airNowPm25Text.setText(pm25);
@@ -294,7 +372,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
     @Override
     public void getWeatherHourly(Hourly bean) {
         if (bean != null && bean.getHourly() != null) {
-            hourlyLayout.setVisibility(View.VISIBLE);
+            hourlyCard.setVisibility(View.VISIBLE);
             weatherHourlyBean = bean;
             List<HourlyBase> hourlyWeatherList = bean.getHourly();
             List<HourlyBase> data = new ArrayList<>();
@@ -348,7 +426,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
     @Override
     public void getWeatherLifeStyle(Lifestyle bean) {
 //        if (bean != null && bean.getLifestyle() != null) {
-//            lifeStyleLayout.setVisibility(View.VISIBLE);
+//            lifeStyleCard.setVisibility(View.VISIBLE);
 //            LifestyleBase lifestyleBase = bean.getLifestyle().get(0);
 //            String brf = lifestyleBase.getBrf();
 //            String txt = lifestyleBase.getTxt();
