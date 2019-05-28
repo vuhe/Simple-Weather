@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
-            android:text="空气质量实况"
+            android:text="@string/air_now"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="2"
-                android:text="空气质量指数(AQI)"
+                android:text="@string/air_now_aqi"
                 android:textColor="@color/black" />
 
             <TextView
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="2"
-                android:text="主要污染物"
+                android:text="@string/air_now_main"
                 android:textColor="@color/black" />
 
             <TextView
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="2"
-                android:text="空气质量"
+                android:text="@string/air_quality"
                 android:textColor="@color/black" />
 
             <TextView
@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="2"
-                android:text="PM 10"
+                android:text="@string/pm10"
                 android:textColor="@color/black" />
 
             <TextView
@@ -123,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="2"
-                android:text="PM 2.5"
+                android:text="@string/pm2_5"
                 android:textColor="@color/black" />
 
             <TextView
@@ -145,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="2"
-                android:text="二氧化氮(NO₂)"
+                android:text="@string/no2"
                 android:textColor="@color/black" />
 
             <TextView
@@ -167,7 +167,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="2"
-                android:text="二氧化硫(SO₂)"
+                android:text="@string/so2"
                 android:textColor="@color/black" />
 
             <TextView
@@ -189,7 +189,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="2"
-                android:text="一氧化碳(CO)"
+                android:text="@string/co"
                 android:textColor="@color/black" />
 
             <TextView
@@ -211,7 +211,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="2"
-                android:text="臭氧(O₃)"
+                android:text="@string/o3"
                 android:textColor="@color/black" />
 
             <TextView

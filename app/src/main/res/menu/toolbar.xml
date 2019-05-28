@@ -5,13 +5,13 @@
     <item
         android:id="@+id/title_city_search"
         android:icon="@mipmap/icon_search"
-        android:title="search"
+        android:title="@string/search"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/title_setting"
         android:icon="@mipmap/icon_setting"
-        android:title="setting"
+        android:title="@string/setting"
         app:showAsAction="always" />
 
 </menu>

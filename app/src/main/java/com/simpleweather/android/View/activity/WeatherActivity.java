@@ -1,7 +1,9 @@
 package com.simpleweather.android.View.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,9 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.simpleweather.android.MyApplication;
 import com.simpleweather.android.R;
 import com.simpleweather.android.View.horizon_view.HourlyForecastView;
 import com.simpleweather.android.View.horizon_view.IndexHorizontalScrollView;
@@ -44,7 +46,7 @@ import interfaces.heweather.com.interfacesmodule.view.HeConfig;
 
 public class WeatherActivity extends AppCompatActivity implements WeatherInterface {
 
-    private ScrollView weatherLayout;
+    private NestedScrollView weatherLayout;
     private CoordinatorLayout weatherBackground;
     private Toolbar title;
     private SwipeRefreshLayout weatherRefresh;
@@ -107,6 +109,8 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
         initData(ContentUtil.LOCATION);
         weatherLayout.setVisibility(View.VISIBLE);
     }
+
+
 
     /**
      * 返回活动时，刷新数据

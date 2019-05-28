@@ -1,69 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_ececec"
-    android:orientation="vertical"
-    tools:context=".View.activity.SearchActivity">
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:background="@color/back_white">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/search_back"
-            android:layout_width="38dp"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:padding="5dp"
-            android:src="@mipmap/icon_back" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="@string/add_city"
-            android:textColor="@color/color_212121"
-            android:textSize="17sp" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rv_search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/back_white">
-
-        <AutoCompleteTextView
-            android:id="@+id/et_search"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/search_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/shape_search"
-            android:gravity="center_vertical"
-            android:hint="@string/add_city"
-            android:maxLength="20"
-            android:paddingStart="30dp"
-            android:singleLine="true"
-            android:textColor="@color/color_212121"
-            android:textColorHint="@color/color_a4a4a4"
-            android:textSize="16sp" />
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white80">
 
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:text="@string/add_city"
+                android:textColor="@color/color_212121"
+                android:textSize="20sp" />
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycle_search"
-        android:visibility="visible"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
-        android:background="@color/back_white">
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    </android.support.v7.widget.RecyclerView>
+        <RelativeLayout
+            android:id="@+id/rv_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/back_white">
 
-</LinearLayout>
+            <AutoCompleteTextView
+                android:id="@+id/et_search"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/shape_search"
+                android:gravity="center_vertical"
+                android:hint="@string/search_city"
+                android:maxLength="20"
+                android:paddingStart="10dp"
+                android:singleLine="true"
+                android:textColor="@color/color_212121"
+                android:textColorHint="@color/color_a4a4a4"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/back_white"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_location" />
+
+            <TextView
+                android:id="@+id/search_location"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:text="@string/positioning"
+                android:textColor="@color/color_7A7A7A"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/search_refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:src="@mipmap/icon_refresh" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycle_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:background="@color/back_white"
+            android:visibility="visible">
+
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
