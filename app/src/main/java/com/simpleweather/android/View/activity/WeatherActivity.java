@@ -1,14 +1,7 @@
-package com.simpleweather.android.View.activity;
+package com.simpleweather.android.view.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,12 +10,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.simpleweather.android.MyApplication;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.widget.NestedScrollView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.cardview.widget.CardView;
+import androidx.appcompat.widget.Toolbar;
+
 import com.simpleweather.android.R;
-import com.simpleweather.android.View.horizon_view.HourlyForecastView;
-import com.simpleweather.android.View.horizon_view.IndexHorizontalScrollView;
-import com.simpleweather.android.View.horizon_view.ScrollWatched;
-import com.simpleweather.android.View.horizon_view.ScrollWatcher;
+import com.simpleweather.android.view.horizon_view.HourlyForecastView;
+import com.simpleweather.android.view.horizon_view.IndexHorizontalScrollView;
+import com.simpleweather.android.view.horizon_view.ScrollWatched;
+import com.simpleweather.android.view.horizon_view.ScrollWatcher;
 import com.simpleweather.android.presenters.WeatherInterface;
 import com.simpleweather.android.presenters.impl.WeatherImpl;
 import com.simpleweather.android.util.ContentUtil;
@@ -44,7 +42,7 @@ import interfaces.heweather.com.interfacesmodule.bean.weather.now.Now;
 import interfaces.heweather.com.interfacesmodule.bean.weather.now.NowBase;
 import interfaces.heweather.com.interfacesmodule.view.HeConfig;
 
-public class WeatherActivity extends AppCompatActivity implements WeatherInterface {
+public class WeatherActivity extends BaseActivity implements WeatherInterface {
 
     private NestedScrollView weatherLayout;
     private CoordinatorLayout weatherBackground;
@@ -70,7 +68,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
     private ImageView wfCondIcon;
     private TextView wfTmpText;
 
-    List<ScrollWatcher> watcherList;
+    private List<ScrollWatcher> watcherList;
     private List<TextView> textViewList = new ArrayList<>();
     private TextView tvLineMin;
     private TextView tvLineMax;
@@ -111,7 +109,6 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
     }
 
 
-
     /**
      * 返回活动时，刷新数据
      */
@@ -121,8 +118,8 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
         String mLocation = SpUtils.getString("cityId");
         if (mLocation != null && !mLocation.equals(ContentUtil.LOCATION)) {
             ContentUtil.LOCATION = mLocation;
-            initData(ContentUtil.LOCATION);
         }
+            initData(ContentUtil.LOCATION);
     }
 
     @Override
@@ -131,8 +128,8 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
         String mLocation = SpUtils.getString("cityId");
         if (mLocation != null && !mLocation.equals(ContentUtil.LOCATION)) {
             ContentUtil.LOCATION = mLocation;
-            initData(ContentUtil.LOCATION);
         }
+            initData(ContentUtil.LOCATION);
     }
 
     /**
@@ -185,11 +182,10 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.title_city_search:
-                Intent intent = new Intent(WeatherActivity.this, SearchActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(WeatherActivity.this, SearchActivity.class));
                 break;
             case R.id.title_setting:
-                //启动设置
+                startActivity(new Intent(WeatherActivity.this, SettingActivity.class));
                 break;
             default:
                 break;
@@ -239,7 +235,8 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
         watched.addWatcher(hourlyForecastView);
         horizontalScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX,
+                                       int oldScrollY) {
                 watched.notifyWatcher(scrollX);
             }
         });
@@ -280,12 +277,15 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
             String hum = now.getHum() + "%";
             String pres = now.getPres() + "HPA";
             String vis = now.getVis() + "KM";
-            String windDir = "风向：" + now.getWind_dir();
+            String windDir = getResources().getString(R.string.wind_dir) + ": " + now.getWind_dir();
             String windSpd = now.getWind_spd() + " KM/H";
-            String windSc = now.getWind_sc() + "级";
+            String windSc = now.getWind_sc();
             String condTxt = now.getCond_txt();
             String tmp = now.getTmp() + "°";
-            String fl = "体感温度：" + now.getFl() + "°";
+            if (ContentUtil.DEGREE.equals("F")) {
+                tmp = TransUnitUtil.getF(now.getTmp()) + "°";
+            }
+            String fl = getResources().getString(R.string.feel_tmp) + ": " + now.getFl() + "°";
             String cloud = now.getCloud();
             int condCode = IconUtils.getDayIconDark(now.getCond_code());
             int backCode = IconUtils.getDayBack(now.getCond_code());
@@ -311,7 +311,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
             nowCondIcon.setImageResource(condCode);
             weatherBackground.setBackgroundResource(backCode);
             title.setTitle(city);
-            updateTime = TransUnitUtil.getUpdateTime(updateTime);
+            updateTime = getUpdateTime(updateTime);
             title.setSubtitle(updateTime);
         }
     }
@@ -329,12 +329,17 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
                 wfDateText = view.findViewById(R.id.wf_date_text);
                 wfCondIcon = view.findViewById(R.id.wf_cond_icon);
                 wfTmpText = view.findViewById(R.id.wf_tmp_text);
-                String time = TransUnitUtil.getForecastTime(forecast.getDate(), i++);
+                String time = getForecastTime(forecast.getDate(), i++);
                 wfDateText.setText(time);
                 wfCondText.setText(forecast.getCond_txt_d());
                 int condCode = IconUtils.getDayIconDark(forecast.getCond_code_d());
                 wfCondIcon.setImageResource(condCode);
                 String wfTmp = forecast.getTmp_max() + " / " + forecast.getTmp_min() + "°";
+                if (ContentUtil.DEGREE.equals("F")) {
+                    String wfTem_max = TransUnitUtil.getF(forecast.getTmp_max());
+                    String wfTem_min = TransUnitUtil.getF(forecast.getTmp_min());
+                    wfTmp = wfTem_max + " / " + wfTem_min + "°";
+                }
                 wfTmpText.setText(wfTmp);
                 forecastLayout.addView(view);
             }
@@ -360,7 +365,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
                 LinearLayout airNowMainLayout = findViewById(R.id.air_now_main_layout);
                 airNowMainLayout.setVisibility(View.GONE);
             } else {
-                main = TransUnitUtil.getAirNowMain(main);
+                main = getAirNowMain(main);
             }
             airNowMainText.setText(main);
             airNowQltyText.setText(qlty);
@@ -422,8 +427,14 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
                 hourlyForecastView.setLowestTemp(minTmp - 1);
             }
             hourlyForecastView.initData(data);
-            tvLineMax.setText(maxTmp + "°");
-            tvLineMin.setText(minTmp + "°");
+            String maxTmpStr = String.valueOf(maxTmp);
+            String minTmpStr = String.valueOf(minTmp);
+            if (ContentUtil.DEGREE.equals("F")) {
+                maxTmpStr = TransUnitUtil.getF(maxTmpStr);
+                minTmpStr = TransUnitUtil.getF(minTmpStr);
+            }
+            tvLineMax.setText(maxTmpStr + "°");
+            tvLineMin.setText(minTmpStr + "°");
         }
     }
 
@@ -445,4 +456,80 @@ public class WeatherActivity extends AppCompatActivity implements WeatherInterfa
 //            lifeStyleTypeText.setText(type);
 //        }
     }
+
+    /**
+     * 数据转换
+     */
+    private String getUpdateTime(String time) {
+        String[] time0 = time.split("-| ");
+        String year = time0[0] + getWord("year");
+        String month = time0[1] + getWord("month");
+        if (month.charAt(0) == '0') {
+            month = month.substring(1);
+        }
+        String day = time0[2] + getWord("day");
+        if (day.charAt(0) == '0') {
+            day = day.substring(1);
+        }
+        return getWord("update_time") + ": " + month + day + " " + time0[3];
+    }
+
+    private String getForecastTime(String time, int index) {
+        switch (index) {
+            case -2:
+                return getResources().getString(R.string.before_y);
+            case -1:
+                return getResources().getString(R.string.yesterday);
+            case 0:
+                return getResources().getString(R.string.today);
+            case 1:
+                return getResources().getString(R.string.tomorrow);
+            case 2:
+                return getResources().getString(R.string.after_t);
+            default:
+                String[] time0 = time.split("-| ");
+                String month = time0[1] + getWord("month");
+                if (month.charAt(0) == '0') {
+                    month = month.substring(1);
+                }
+                String day = time0[2] + getWord("day");
+                if (day.charAt(0) == '0') {
+                    day = day.substring(1);
+                }
+                return month + day;
+        }
+    }
+
+    private String getAirNowMain(String main) {
+        switch (main) {
+            case "PM25":
+                return getResources().getString(R.string.pm2_5);
+            case "CO":
+                return getResources().getString(R.string.co);
+            case "O3":
+                return getResources().getString(R.string.o3);
+            case "NO2":
+                return getResources().getString(R.string.no2);
+            case "SO2":
+                return getResources().getString(R.string.so2);
+            default:
+                return main;
+        }
+    }
+
+    private String getWord(String key) {
+        switch (key) {
+            case "day":
+                return getResources().getString(R.string.day);
+            case "month":
+                return getResources().getString(R.string.month);
+            case "year":
+                return getResources().getString(R.string.year);
+            case "update_time":
+                return getResources().getString(R.string.update_time);
+            default:
+                return null;
+        }
+    }
+
 }

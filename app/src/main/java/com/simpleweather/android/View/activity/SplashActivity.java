@@ -1,14 +1,14 @@
-package com.simpleweather.android.View.activity;
+package com.simpleweather.android.view.activity;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.simpleweather.android.MyApplication;
 import com.simpleweather.android.R;
@@ -21,7 +21,7 @@ import java.util.List;
 import static com.simpleweather.android.util.ContentUtil.NO_LOCATION_PERMISSION;
 import static com.simpleweather.android.util.ContentUtil.POSITIONING;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
 
     private Context context = MyApplication.getContext();
 

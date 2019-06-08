@@ -1,22 +1,20 @@
-package com.simpleweather.android.View.activity;
+package com.simpleweather.android.view.activity;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.simpleweather.android.MyApplication;
 import com.simpleweather.android.R;
@@ -28,7 +26,6 @@ import com.simpleweather.android.util.SpUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import interfaces.heweather.com.interfacesmodule.bean.Lang;
 import interfaces.heweather.com.interfacesmodule.bean.basic.Basic;
 import interfaces.heweather.com.interfacesmodule.bean.search.Search;
 import interfaces.heweather.com.interfacesmodule.view.HeWeather;
@@ -37,15 +34,15 @@ import static com.simpleweather.android.util.ContentUtil.LOCATION_ERROR;
 import static com.simpleweather.android.util.ContentUtil.NO_LOCATION_PERMISSION;
 import static com.simpleweather.android.util.ContentUtil.POSITIONING;
 import static com.simpleweather.android.util.ContentUtil.L_SUCCESS;
+import static com.simpleweather.android.util.ContentUtil.lang;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends BaseActivity {
 
     private Toolbar searchToolbar;
-    private AutoCompleteTextView etSearch;
+    private SearchView searchView;
     private RecyclerView rvSearch;
     private TextView searchLocation;
     private ImageView searchRefresh;
-    private Lang lang;
     private Context context = MyApplication.getContext();
     private String locationCid;
 
@@ -53,8 +50,6 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        //测试时，仅设置中文
-        lang = Lang.CHINESE_SIMPLIFIED;
         new LocationTask().execute();
         initView();
         initSearch();
@@ -71,10 +66,10 @@ public class SearchActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
-        etSearch = findViewById(R.id.et_search);
+        searchView = findViewById(R.id.search_view);
         rvSearch = findViewById(R.id.recycle_search);
         LinearLayoutManager sevenManager = new LinearLayoutManager(this);
-        sevenManager.setOrientation(LinearLayoutManager.VERTICAL);
+        sevenManager.setOrientation(RecyclerView.VERTICAL);
         rvSearch.setLayoutManager(sevenManager);
         searchRefresh = findViewById(R.id.search_refresh);
         searchRefresh.setOnClickListener(new View.OnClickListener() {
@@ -111,26 +106,21 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void initSearch() {
-        etSearch.setThreshold(1);
-        //编辑框输入监听
-        etSearch.addTextChangedListener(new TextWatcher() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public boolean onQueryTextSubmit(String s) {
+                return true;
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String searchResult = etSearch.getText().toString();
-                if (!TextUtils.isEmpty(searchResult)) {
+            public boolean onQueryTextChange(String s) {
+                if (!TextUtils.isEmpty(s)) {
                     rvSearch.setVisibility(View.VISIBLE);
-                    getSearchResult(searchResult);
+                    getSearchResult(s);
                 } else {
                     rvSearch.setVisibility(View.GONE);
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
+                return true;
             }
         });
     }
@@ -189,8 +179,7 @@ public class SearchActivity extends AppCompatActivity {
                                 }
 
                                 SearchAdapter searchAdapter = new SearchAdapter(
-                                        SearchActivity.this, data,
-                                        etSearch.getText().toString());
+                                        SearchActivity.this, data, location);
                                 rvSearch.setAdapter(searchAdapter);
                                 searchAdapter.notifyDataSetChanged();
                             }
@@ -228,7 +217,7 @@ public class SearchActivity extends AppCompatActivity {
                         });
                     }
                 }).start();
-            }else {
+            } else {
                 publishProgress();
             }
             return true;

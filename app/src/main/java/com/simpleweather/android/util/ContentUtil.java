@@ -1,5 +1,7 @@
 package com.simpleweather.android.util;
 
+import interfaces.heweather.com.interfacesmodule.bean.Lang;
+
 public class ContentUtil {
 
     //定位状态
@@ -23,6 +25,9 @@ public class ContentUtil {
     //当前城市
     public static String LOCATION = "CN101010100";
 
-    //应用设置里的文字
+    //应用设置
+    public static Lang lang = Lang.CHINESE_SIMPLIFIED;
+    public static String FONT_SIZE = "mid";
+    public static String DEGREE = "C";
 
 }

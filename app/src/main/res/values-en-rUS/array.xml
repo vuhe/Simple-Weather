@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="language">
+        <item>@string/chinese</item>
+        <item>@string/english</item>
+    </string-array>
+    <string-array name="tmp_unit">
+        <item>@string/she</item>
+        <item>@string/hua</item>
+    </string-array>
+</resources>

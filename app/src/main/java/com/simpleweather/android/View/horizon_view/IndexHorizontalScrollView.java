@@ -1,4 +1,4 @@
-package com.simpleweather.android.View.horizon_view;
+package com.simpleweather.android.view.horizon_view;
 
 import android.content.Context;
 import android.graphics.Canvas;

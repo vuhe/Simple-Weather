@@ -1,12 +1,21 @@
 <resources>
     <string name="app_name">简单天气</string>
+
+    <!--date-->
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
+    <string name="update_time">更新时间</string>
+    <string name="before_y" translatable="false">前天</string>
+    <string name="yesterday">昨天</string>
     <string name="today">今天</string>
     <string name="tomorrow">明天</string>
-    <string name="after_t">后天</string>
+    <string name="after_t" translatable="false">后天</string>
 
     <!--now-->
-    <string name="hello_blank_fragment">blank fragment</string>
     <string name="today_title">今日详情</string>
+    <string name="feel_tmp">体感温度</string>
+    <string name="wind_dir">风向</string>
     <string name="wind_spd">风速</string>
     <string name="wind_sc">风力</string>
     <string name="max_tmp">最高温</string>
@@ -31,9 +40,9 @@
     <string name="air_now_aqi">空气质量指数(AQI)</string>
     <string name="air_now_main">主要污染物</string>
     <string name="air_quality">空气质量</string>
-    <string name="pm2_5">PM 2.5</string>
+    <string name="pm2_5" translatable="false">PM 2.5</string>
     <string name="so2">二氧化硫(SO₂)</string>
-    <string name="pm10">PM 10</string>
+    <string name="pm10" translatable="false">PM 10</string>
     <string name="no2">二氧化氮(NO₂)</string>
     <string name="co">一氧化碳(CO)</string>
     <string name="o3">臭氧(O₃)</string>
@@ -46,14 +55,15 @@
     <string name="search_city">请输入城市名称</string>
     <string name="add_city">搜索城市</string>
 
+    <!--setting-->
     <string name="setting">设置</string>
     <string name="choose_lang">语言选择</string>
-    <string name="english">英文</string>
+    <string name="english">English</string>
     <string name="chinese">中文</string>
     <string name="system_lang">系统语言</string>
     <string name="choose_unit">单位选择</string>
-    <string name="hua">华氏度</string>
     <string name="she">摄氏度</string>
+    <string name="hua">华氏度</string>
     <string name="choose_text_size">字体大小</string>
     <string name="small">小</string>
     <string name="mid">中</string>
@@ -63,7 +73,6 @@
 
     <string name="nearly_search">最近搜索</string>
 
-
-    <string name="powered">Powered By heweather.com</string>
+    <string name="powered" translatable="false">Powered By heweather.com</string>
 
 </resources>

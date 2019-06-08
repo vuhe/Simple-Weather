@@ -9,7 +9,6 @@ import com.simpleweather.android.presenters.WeatherInterface;
 import com.simpleweather.android.presenters.WeatherPresenters;
 import com.simpleweather.android.util.SpUtils;
 
-import interfaces.heweather.com.interfacesmodule.bean.Lang;
 import interfaces.heweather.com.interfacesmodule.bean.Unit;
 import interfaces.heweather.com.interfacesmodule.bean.air.now.AirNow;
 import interfaces.heweather.com.interfacesmodule.bean.search.Search;
@@ -19,19 +18,18 @@ import interfaces.heweather.com.interfacesmodule.bean.weather.lifestyle.Lifestyl
 import interfaces.heweather.com.interfacesmodule.bean.weather.now.Now;
 import interfaces.heweather.com.interfacesmodule.view.HeWeather;
 
+import static com.simpleweather.android.util.ContentUtil.lang;
+
 public class WeatherImpl implements WeatherPresenters {
 
     private Context context;
     private WeatherInterface weatherInterface;
     private String TAG = "sky";
-    private Lang lang;
     private Unit unit;
 
     public WeatherImpl(WeatherInterface weatherInterface) {
         this.context = MyApplication.getContext();
         this.weatherInterface = weatherInterface;
-        //测试时，仅设置中文
-        lang = Lang.CHINESE_SIMPLIFIED;
         unit = Unit.METRIC;
     }
 

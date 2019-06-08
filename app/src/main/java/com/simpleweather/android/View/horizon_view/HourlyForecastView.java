@@ -1,4 +1,4 @@
-package com.simpleweather.android.View.horizon_view;
+package com.simpleweather.android.view.horizon_view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,16 +13,19 @@ import android.graphics.Rect;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.View;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+
 import com.simpleweather.android.R;
+import com.simpleweather.android.util.ContentUtil;
 import com.simpleweather.android.util.DisplayUtil;
 import com.simpleweather.android.util.IconUtils;
+import com.simpleweather.android.util.TransUnitUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -158,7 +161,7 @@ public class HourlyForecastView extends View implements ScrollWatcher {
         defHeightPixel = DisplayUtil.dp2px(mContext, 80);
 
         lowestTempHeight = DisplayUtil.dp2px(mContext, 40);//长度  非y轴值
-        highestTempHeight = DisplayUtil.dp2px(mContext,70);
+        highestTempHeight = DisplayUtil.dp2px(mContext, 70);
         //defPadding
         paddingT = DisplayUtil.dp2px(mContext, 20);
         paddingL = DisplayUtil.dp2px(mContext, 10);
@@ -284,6 +287,9 @@ public class HourlyForecastView extends View implements ScrollWatcher {
                 int baseline = (targetRect.bottom + targetRect.top - fontMetrics.bottom
                         - fontMetrics.top) / 2;
                 textLinePaint.setTextAlign(Paint.Align.LEFT);
+                if (ContentUtil.DEGREE.equals("F")) {
+                    tmp = TransUnitUtil.getF(tmp);
+                }
                 canvas.drawText(tmp + "°", targetRect.centerX(), baseline, textLinePaint);
             }
         }
@@ -503,7 +509,7 @@ public class HourlyForecastView extends View implements ScrollWatcher {
             //画时间
             String time = hourlyWeatherList.get(i).getTime();
             //画时间
-            if (ITEM_SIZE > 8){
+            if (ITEM_SIZE > 8) {
                 if (i % 2 == 0) {
                     if (i == 0) {
                         textPaint.setTextAlign(Paint.Align.LEFT);
@@ -513,7 +519,7 @@ public class HourlyForecastView extends View implements ScrollWatcher {
                     canvas.drawText(time.substring(time.length() - 5), w, baseLineHeight
                             + textSize + DisplayUtil.dip2px(mContext, 3), textPaint);
                 }
-            }else {
+            } else {
                 textPaint.setTextAlign(Paint.Align.CENTER);
                 if (i == 0) {
                     canvas.drawText(mContext.getString(R.string.now), w, baseLineHeight

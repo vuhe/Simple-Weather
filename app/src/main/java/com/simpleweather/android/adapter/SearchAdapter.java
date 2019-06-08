@@ -1,9 +1,6 @@
 package com.simpleweather.android.adapter;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.Adapter;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -13,8 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.Adapter;
+
 import com.simpleweather.android.R;
-import com.simpleweather.android.View.activity.SearchActivity;
+import com.simpleweather.android.view.activity.SearchActivity;
 import com.simpleweather.android.bean.CityBean;
 import com.simpleweather.android.util.SpUtils;
 
@@ -36,8 +37,8 @@ public class SearchAdapter extends Adapter<RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view;
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_searching,
-                    viewGroup, false);
+        view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_searching,
+                viewGroup, false);
         return new MyViewHolder(view);
     }
 

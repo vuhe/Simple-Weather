@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/search_toolbar"
+            android:id="@+id/setting_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:elevation="20dp"
@@ -22,67 +22,61 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
-                android:text="@string/add_city"
+                android:text="@string/setting"
                 android:textColor="@color/color_212121"
                 android:textSize="20sp" />
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/search_view"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:iconifiedByDefault="false"
-            app:queryHint="@string/search_city"/>
+            android:layout_margin="15dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/choose_lang"
+                android:textSize="20sp" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/setting_language"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:entries="@array/language"
+                android:spinnerMode="dropdown" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:src="@mipmap/icon_location" />
-
             <TextView
-                android:id="@+id/search_location"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_centerVertical="true"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="@string/positioning"
-                android:textColor="@color/color_7A7A7A"
-                android:textSize="16sp" />
+                android:text="@string/choose_unit"
+                android:textSize="20sp" />
 
-            <ImageView
-                android:id="@+id/search_refresh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:clickable="true"
-                android:src="@mipmap/icon_refresh" />
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/setting_tmp_unit"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:entries="@array/tmp_unit"
+                android:spinnerMode="dropdown" />
         </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycle_search"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            android:paddingLeft="20dp"
-            android:visibility="visible">
-
-        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
